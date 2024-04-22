@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.recipeStore.entity.Recipe;
+import com.recipeStore.entity.Ingredient;
 import com.recipeStore.entity.MyRecipeList;
 import com.recipeStore.service.RecipeService;
 import com.recipeStore.service.MyRecipeListService;
+import com.recipeStore.service.IngredientService;
 
 import java.util.*;
 
@@ -21,6 +23,9 @@ public class RecipeController {
 	
 	@Autowired
 	private MyRecipeListService myRecipeService;
+
+	@Autowired
+	private IngredientService ingredientService;
 	
 	@GetMapping("/")
 	public String home() {
@@ -55,9 +60,36 @@ public class RecipeController {
 	}
 	@RequestMapping("/mylist/{id}")
 	public String getMyList(@PathVariable("id") int id) {
-		Recipe b=service.getRecipeById(id);
-		MyRecipeList mb=new MyRecipeList(b.getId(),b.getName(),b.getIngredient(),b.getPrice());
-		myRecipeService.saveMyRecipes(mb);
+		// Recipe b=service.getRecipeById(id);
+		// MyRecipeList mb=new MyRecipeList(b.getId(),b.getName(),b.getIngredient(),b.getPrice());
+		// myRecipeService.saveMyRecipes(mb);
+		// return "redirect:/my_recipes";
+
+		Recipe b = service.getRecipeById(id);
+
+		// Split ingredients from the recipe
+		String[] ingredients = b.getIngredient().split(",");
+
+		// Check each ingredient if it exists in the ingredients table
+		boolean allIngredientsExist = true;
+		for (String ingredientName : ingredients) {
+			Ingredient ingredient = ingredientService.getIngredientByName(ingredientName.trim());
+			if (ingredient == null) {
+				allIngredientsExist = false;
+				break;
+			}
+		}
+
+		if (allIngredientsExist) {
+			// All ingredients exist in the ingredients table, add to user's list
+			MyRecipeList mb = new MyRecipeList(b.getId(), b.getName(), b.getIngredient(), b.getPrice());
+			myRecipeService.saveMyRecipes(mb);
+		} else {
+			// Not all ingredients exist in the ingredients table, handle accordingly
+			// You can redirect or show an error message to the user
+			return "redirect:/my_recipes?error=missing-ingredients";
+		}
+
 		return "redirect:/my_recipes";
 	}
 	
