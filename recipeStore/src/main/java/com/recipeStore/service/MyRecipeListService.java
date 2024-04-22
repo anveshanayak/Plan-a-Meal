@@ -9,19 +9,22 @@ import com.recipeStore.entity.MyRecipeList;
 import com.recipeStore.repository.MyRecipeRepository;
 
 @Service
-public class MyRecipeListService {
+public class MyRecipeListService implements MyRecipeListServiceInterface{
 	
 	@Autowired
 	private MyRecipeRepository myrecipe;
 	
+	@Override
 	public void saveMyRecipes(MyRecipeList recipe) {
 		myrecipe.save(recipe);
 	}
 	
+	@Override
 	public List<MyRecipeList> getAllMyRecipes(){
 		return myrecipe.findAll();
 	}
 	
+	@Override
 	public void deleteById(int id) {
 		myrecipe.deleteById(id);
 	}
