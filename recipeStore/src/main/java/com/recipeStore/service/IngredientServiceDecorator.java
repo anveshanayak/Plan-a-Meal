@@ -39,6 +39,20 @@ public class IngredientServiceDecorator implements IngredientServiceInterface {
   }
 
   @Override
+  public Ingredient getIngredientByName(String name) {
+    try {
+      Ingredient ingredient = ingredientService.getIngredientByName(name);
+      return ingredient;
+    }
+    catch (Exception e) {
+      // Handling exception
+      System.err.println("Error while getting ingredient by name: " + name);
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override
   public void deleteIngredientById(int id) {
     try {
       ingredientService.deleteIngredientById(id);

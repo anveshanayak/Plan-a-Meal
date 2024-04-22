@@ -35,6 +35,11 @@ public class IngredientService implements IngredientServiceInterface{
 	}
 
 	@Override
+    public Ingredient getIngredientByName(String name) {
+        return iRepo.findByName(name);
+    }
+
+	@Override
 	public void deleteIngredientById(int id) {
 		iRepo.deleteById(id);
 	}

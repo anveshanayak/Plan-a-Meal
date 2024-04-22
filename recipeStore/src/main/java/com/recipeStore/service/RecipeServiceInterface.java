@@ -13,4 +13,6 @@ public interface RecipeServiceInterface {
     Recipe getRecipeById(int id);
 
     void deleteById(int id);
+
+    boolean checkIngredientsExistInRecipe(int recipeId);
 }

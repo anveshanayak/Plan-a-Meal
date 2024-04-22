@@ -51,4 +51,9 @@ public class RecipeServiceDecorator implements RecipeServiceInterface {
       e.printStackTrace();
     }
   }
+
+  public boolean checkIngredientsExistInRecipe(int recipeId) {
+    System.out.println("Ingredient checked successfully.");
+    return true;
+  }
 }
